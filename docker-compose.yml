@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  server:
+    image: docker:18.09-dind
+    expose:
+      - 2379
+      - 2375
+    privileged: true
+    container_name: docker
+    command: -H tcp://0.0.0.0:2379
+  
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: python app.py
+
+    volumes:
+      - ./webapp:/webapp
+      
+    ports:
+      - "5000:5000"
+
+volumes:
+  webapp:
